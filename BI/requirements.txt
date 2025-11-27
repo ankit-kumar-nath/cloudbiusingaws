@@ -1,0 +1,16 @@
+streamlit
+pandas
+numpy
+plotly
+matplotlib
+scikit-learn
+lightgbm
+xgboost
+prophet
+statsmodels
+pdfplumber
+tabula-py
+joblib
+openpyxl
+reportlab
+weasyprint
