@@ -40,7 +40,7 @@ st.title("Cloud BI : A Business Intelligence & Sales Forecasting App")
 st.sidebar.header("Controls")
 st.sidebar.info(f"S3 bucket: {S3_BUCKET}")
 
-uploaded_file = st.sidebar.file_uploader("Upload CSV or PDF (business dataset)", type=["csv", "pdf"])
+uploaded_file = st.sidebar.file_uploader("Upload CSV or PDF (business dataset)", type=["csv", "pdf"]) 
 file_bytes = None
 if uploaded_file is not None:
     file_bytes = uploaded_file.read()
@@ -225,7 +225,20 @@ if start_date is None or end_date is None:
 # --------- Product and Region filters (no Apply button, no forced defaults) ---------
 st.subheader("Product and Region Filters")
 
+# session-state keys
+_prod_sel_key = "prod_filter"
+_prod_col_key = "prod_filter_col"
+_reg_sel_key = "region_filter"
+_reg_col_key = "region_filter_col"
+
+# reset product multiselect if the selected product column changed
+if st.session_state.get(_prod_col_key) != product_col_choice:
+    # clear previous product selections when column changes
+    st.session_state[_prod_sel_key] = []
+    st.session_state[_prod_col_key] = product_col_choice
+
 # Product filter (do NOT supply a runtime-default that forces reset)
+products_selected = []
 if product_col_choice:
     vals_prod, total_prod = safe_unique_values(df[product_col_choice], sample_max=2000, max_options=1000)
 
@@ -235,15 +248,24 @@ if product_col_choice:
     else:
         if total_prod > 1000:
             st.caption(f"Product column has {total_prod} unique values — showing up to 1000 sampled options.")
+        # use the session-state key and pass the current session value as default
+        default_prod = st.session_state.get(_prod_sel_key, [])
         products_selected = st.multiselect(
             "Products (multi-select — sample shown)",
             options=vals_prod[:500],
-            key="prod_filter"
+            default=default_prod,
+            key=_prod_sel_key
         )
 else:
     products_selected = []
 
+# reset region multiselect if the selected region column changed
+if st.session_state.get(_reg_col_key) != region_col_choice:
+    st.session_state[_reg_sel_key] = []
+    st.session_state[_reg_col_key] = region_col_choice
+
 # Region filter
+regions_selected = []
 if region_col_choice:
     vals_reg, total_reg = safe_unique_values(df[region_col_choice], sample_max=2000, max_options=1000)
 
@@ -253,10 +275,12 @@ if region_col_choice:
     else:
         if total_reg > 1000:
             st.caption(f"Region column has {total_reg} unique values — showing up to 1000 sampled options.")
+        default_reg = st.session_state.get(_reg_sel_key, [])
         regions_selected = st.multiselect(
             "Regions (multi-select — sample shown)",
             options=vals_reg[:500],
-            key="region_filter"
+            default=default_reg,
+            key=_reg_sel_key
         )
 else:
     regions_selected = []
@@ -381,7 +405,7 @@ with tab_overview:
             st.info("No daily timeseries data available.")
 
     with col_b:
-        st.subheader("Monthly Sales & MoM Growth")
+        st.subheader("Monthly Sales & Month over Month Growth")
         monthly = build_timeseries(df_filtered, date_col, value_numeric_col, "MS")
         if len(monthly) >= 2:
             figm = px.bar(monthly, x="ds", y="y", title="Monthly Sales")
@@ -448,7 +472,7 @@ with tab_overview:
 # ---------- Forecast tab ----------
 with tab_forecast:
     st.header("Demand Forecasting")
-    engine = st.selectbox("Engine", options=["Auto", "Prophet", "ARIMA"]) if PROPHET_AVAILABLE else st.selectbox("Engine", options=["ARIMA"])
+    engine = st.selectbox("Engine", options=["Auto", "Prophet", "ARIMA"]) if PROPHET_AVAILABLE else st.selectbox("Engine", options=["ARIMA"]) 
     horizon = st.number_input("Forecast horizon (periods)", min_value=1, value=6)
     ts = build_timeseries(df_filtered, date_col, value_numeric_col, agg_freq)
 
@@ -585,22 +609,23 @@ with st.expander("SQL Explorer — run SQL on filtered data", expanded=False):
             pass
 
         default_sql = "SELECT * FROM data LIMIT 100;"
-        sql = st.text_area("SQL query", value=default_sql, height=160, key="sql_explorer")
+        sql = st.text_area("Athena query", value=default_sql, height=160, key="sql_explorer")
         col_run, col_reset = st.columns([1, 1])
         with col_run:
-            if st.button("Run SQL"):
+            if st.button("Athena SQL"):
                 try:
                     res = pd.read_sql_query(sql, conn)
                     st.success(f"Query returned {len(res)} rows.")
                     st.dataframe(res.head(1000))
                     csv_buf = io.StringIO()
                     res.to_csv(csv_buf, index=False)
-                    st.download_button("Download SQL result (CSV)", data=csv_buf.getvalue(), file_name="sql_result.csv")
+                    st.download_button("Download Athena result (CSV)", data=csv_buf.getvalue(), file_name="sql_result.csv")
                 except Exception as e:
-                    st.error(f"SQL error: {e}")
+                    st.error(f"Athena error: {e}")
         with col_reset:
             if st.button("Reset SQL"):
                 st.experimental_rerun()
+                
 
 # final: let user download filtered dataset
 st.markdown("---")
