@@ -1,4 +1,4 @@
-# Cloud-Based Business Intelligence & Sales Forecasting System
+# Cloud BI - A Cloud-Based Business Intelligence & Sales Forecasting System Solution
 
 A scalable, cloud-native **Business Intelligence (BI)** and **Sales Forecasting** platform built using **AWS serverless services**, **machine learning models**, and an **interactive Streamlit dashboard**.  
 The system automates the entire analytics lifecycle—from raw data ingestion to forecasting and inventory optimization.
@@ -20,6 +20,7 @@ The system automates the entire analytics lifecycle—from raw data ingestion to
 - [Sample Outputs](#sample-outputs)
 - [Future Enhancements](#future-enhancements)
 - [Contributing](#contributing)
+- [Documentation](#documentation)
 - [License](#license)
 - [Contact](#contact)
 
@@ -193,6 +194,10 @@ streamlit run streamlit_app.py
 ```bash
 http://localhost:8501
 ```
+### Check out the Proeject 
+```bash
+https://cloudbiusingaws.streamlit.app/
+```
 
 ## AWS Deployment
 Infrastructure is provisioned using Terraform, including:
@@ -229,5 +234,10 @@ Contributions are welcome:
 - Commit your changes
 - Open a Pull Request
 
+## Documentation 
+Get it from the following Google Drive-
+```bash
+https://drive.google.com/file/d/1AN7n8wwdPBQNuS6tiarvYZlXAJflUkPV/view?usp=sharing
+```
 ## License
 This project is licensed under the MIT License.
