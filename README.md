@@ -139,7 +139,7 @@ User Upload → S3 (Raw)
 ---
 
 ## Project Structure
-
+```
 ├── ingestion/
 │ ├── csv_loader.py
 │ ├── pdf_loader.py
@@ -160,7 +160,7 @@ User Upload → S3 (Raw)
 ├── lambda.tf
 ├── sagemaker.tf
 
-
+```
 ---
 
 ## Installation & Setup
