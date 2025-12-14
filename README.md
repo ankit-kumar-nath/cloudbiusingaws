@@ -193,5 +193,41 @@ streamlit run streamlit_app.py
 ```bash
 http://localhost:8501
 ```
+
+## AWS Deployment
+Infrastructure is provisioned using Terraform, including:
+- S3 buckets
+- Lambda functions
+- Glue ETL jobs
+- SageMaker models
+- IAM roles
+```bash
+terraform init
+terraform apply
+```
+
+## Sample Outputs
+- Sales KPI dashboard
+- Product-wise revenue charts
+- Region-wise heatmaps
+- Forecast vs actual plots
+- Inventory EOQ & reorder metrics
+- Dead stock reports
+
+## Future Enhancements
+- Real-time streaming with Kinesis
+- Multi-user authentication (Cognito)
+- Deep learning models (LSTM, DeepAR)
+- Docker / ECS deployment
+- Automated model retraining pipelines
+
+## Contributing
+Contributions are welcome:
+
+- Fork the repository
+- Create a feature branch
+- Commit your changes
+- Open a Pull Request
+
 ## License
 This project is licensed under the MIT License.
