@@ -1,221 +1,197 @@
-Cloud-Based Business Intelligence & Sales Forecasting Platform (AWS + Streamlit)
+# Cloud-Based Business Intelligence & Sales Forecasting System
 
-A fully automated cloud-native BI, Forecasting, and Inventory Optimization System.
+A scalable, cloud-native **Business Intelligence (BI)** and **Sales Forecasting** platform built using **AWS serverless services**, **machine learning models**, and an **interactive Streamlit dashboard**.  
+The system automates the entire analytics lifecycle—from raw data ingestion to forecasting and inventory optimization.
 
-📌 Overview
+---
 
-This project implements an end-to-end Business Intelligence system powered by AWS.
-Users can upload sales data (CSV/PDF), which is automatically processed through a serverless cloud pipeline to generate:
+## Table of Contents
 
-KPI dashboards
+- [Overview](#overview)
+- [Problem Statement](#problem-statement)
+- [Solution Overview](#solution-overview)
+- [System Architecture](#system-architecture)
+- [Key Features](#key-features)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Installation & Setup](#installation--setup)
+- [Running the Application](#running-the-application)
+- [AWS Deployment](#aws-deployment)
+- [Sample Outputs](#sample-outputs)
+- [Future Enhancements](#future-enhancements)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-Sales trends & visual analytics
+---
 
-Demand forecasting (ARIMA / Prophet / SageMaker)
+## Overview
 
-Inventory optimization (EOQ, Reorder Point, Dead Stock)
+Traditional BI tools mainly focus on visualization and require manual data preparation.  
+This project delivers a **fully automated BI pipeline** that ingests user-uploaded sales data, processes it using cloud ETL, applies forecasting models, and presents actionable insights through a dashboard.
 
-The final insights are displayed on an interactive Streamlit dashboard.
+Designed for **retail, e-commerce, supply chain, and sales analytics** use cases.
 
-🏗️ System Architecture
-User Upload → S3 (Raw Zone)
-            → Lambda (Validation)
-            → Glue (ETL)
-            → S3 (Curated Zone)
-            → Athena (Query Engine)
-            → Forecast Models (ARIMA / Prophet / SageMaker)
-            → S3 (Predictions)
-            → Streamlit Dashboard
+---
 
-S3 Data Lake Structure
-raw/
-curated/
-training/
-predictions/
-logs/
-scripts/
-athena-results/
+## Problem Statement
 
-✨ Key Features
-🔹 1. Automated Ingestion
+Businesses often face:
+- Manual analysis using spreadsheets  
+- Inaccurate sales forecasting  
+- Inefficient inventory planning  
+- High licensing costs for BI tools  
 
-Upload CSV or PDF
+There is a need for an **automated, scalable, and cost-effective BI solution**.
 
-Auto-schema detection
+---
 
-S3 storage with serverless triggers
+## Solution Overview
 
-🔹 2. ETL Processing (AWS Glue)
+This project provides:
+- A **serverless AWS data pipeline**
+- A **data lake architecture** for structured analytics
+- **Machine learning models** for demand forecasting
+- **Inventory optimization logic**
+- A **user-friendly Streamlit dashboard**
 
-Cleans and validates data
+---
 
-Removes duplicates & fixes formats
+## System Architecture
 
-Converts to Parquet for faster queries
+User Upload → S3 (Raw)
+→ Lambda (Validation)
+→ Glue (ETL)
+→ S3 (Curated / Training)
+→ Athena (Analytics)
+→ Forecast Models (ARIMA / Prophet / SageMaker)
+→ S3 (Predictions)
+→ Streamlit Dashboard
 
-🔹 3. BI Analytics
 
-Revenue, profit, product performance
+### S3 Data Lake Zones
+- raw  
+- curated  
+- training  
+- predictions  
+- logs  
+- scripts  
+- athena-results  
 
-Regional sales analysis
+---
 
-Customer segmentation (RFM)
+## Key Features
 
-Time-series visualizations
+### Data Ingestion
+- Upload CSV or PDF files  
+- Automatic schema detection  
+- Secure storage in Amazon S3  
 
-🔹 4. Demand Forecasting
+### ETL & Processing
+- AWS Glue for data cleaning and transformation  
+- Parquet conversion for faster queries  
+- Partitioned datasets  
 
-Supports:
+### Business Intelligence
+- Revenue and profit KPIs  
+- Product and regional analysis  
+- Customer segmentation (RFM)  
+- Interactive visualizations  
 
-Prophet
+### Demand Forecasting
+- ARIMA  
+- Prophet  
+- SageMaker models  
+- Confidence intervals  
 
-ARIMA
+### Inventory Optimization
+- EOQ (Economic Order Quantity)  
+- Reorder Point calculation  
+- Safety stock estimation  
+- Dead stock identification  
 
-SageMaker models
+### Dashboard
+- Streamlit-based interactive UI  
+- KPI cards and charts  
+- Downloadable reports  
 
-Outputs include:
+---
 
-Forecast values
+## Technology Stack
 
-Confidence intervals
+### Cloud Services
+- AWS S3  
+- AWS Lambda  
+- AWS Glue  
+- Amazon Athena  
+- Amazon SageMaker  
+- AWS CloudWatch  
+- AWS IAM  
 
-Seasonal components
+### Programming & Libraries
+- Python  
+- Pandas, NumPy  
+- Plotly  
+- Statsmodels  
+- Prophet  
+- Streamlit  
 
-🔹 5. Inventory Optimization
+---
 
-EOQ (Economic Order Quantity)
+## Project Structure
 
-Reorder Point calculation
-
-Safety stock estimation
-
-Dead stock identification
-
-🔹 6. Interactive Dashboard (Streamlit)
-
-KPI cards
-
-Forecast charts
-
-Downloadable reports
-
-Clean and user-friendly UI
-
-🛠️ Tech Stack
-Frontend / Dashboard
-
-Streamlit
-
-Plotly
-
-Pandas, NumPy
-
-Cloud Services (AWS)
-
-S3
-
-Lambda
-
-Glue
-
-Athena
-
-SageMaker
-
-CloudWatch
-
-IAM
-
-Machine Learning
-
-Prophet
-
-Statsmodels (ARIMA)
-
-Amazon SageMaker
-
-📂 Project Structure
 ├── ingestion/
-│   ├── csv_loader.py
-│   ├── pdf_loader.py
-│   ├── schema_detector.py
+│ ├── csv_loader.py
+│ ├── pdf_loader.py
+│ ├── schema_detector.py
 │
 ├── profiling/
-│   ├── profiler.py
+│ ├── profiler.py
 │
 ├── utils/
-│   ├── s3_uploader.py
+│ ├── s3_uploader.py
 │
 ├── streamlit_app.py
 ├── requirements.txt
 ├── README.md
 └── terraform/
-    ├── s3.tf
-    ├── glue.tf
-    ├── lambda.tf
-    ├── sagemaker.tf
+├── s3.tf
+├── glue.tf
+├── lambda.tf
+├── sagemaker.tf
 
-🚀 Running the Project Locally
-1. Clone the repository
+
+---
+
+## Installation & Setup
+
+### Prerequisites
+- Python 3.9+
+- AWS Account
+- Terraform (optional)
+
+### Clone Repository
+```bash
 git clone https://github.com/your-username/cloud-bi-sales-forecasting.git
 cd cloud-bi-sales-forecasting
-
-2. Create a virtual environment
+```
+### Clone Repository
+```bash
 python -m venv venv
 source venv/bin/activate      # Linux/Mac
 venv\Scripts\activate         # Windows
-
-3. Install dependencies
+```
+### Install Dependencies
+```bash
 pip install -r requirements.txt
-
-4. Start the dashboard
+```
+## Running the Application
+```bash
 streamlit run streamlit_app.py
-
-
-Open browser at http://localhost:8501
-.
-
-☁️ Deploying on AWS
-
-Terraform scripts included for automated deployment of:
-
-S3 bucket
-
-Lambda functions
-
-Glue crawlers & ETL jobs
-
-SageMaker model
-
-IAM roles
-
-Deploy with:
-
-terraform init
-terraform apply
-
-📊 Sample Outputs
-
-Sales KPIs
-
-Product performance charts
-
-Regional sales heatmap
-
-Forecast vs actual plot
-
-EOQ & inventory metrics
-
-Dead stock list
-
-🔮 Future Enhancements
-
-Real-time streaming ingestion (Kinesis)
-
-Multi-user authentication (Cognito)
-
-Deep-learning forecasting (LSTM, DeepAR)
-
-Docker / ECS deployment
-
-Automated model retraining (Pipelines)
+```
+### Open in browser:
+```bash
+http://localhost:8501
+```
+## License
+This project is licensed under the MIT License.
